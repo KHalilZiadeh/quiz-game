@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="Styles.css" />
+    <title>Quizz App</title>
+  </head>
+  <header>
+    <div class="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+  <body>
+    <div class="card">
+      <div class="categories">
+        <div class="category" id="messanger">نبي</div>
+        <div class="category" id="quran">قرآن</div>
+        <div class="category" id="fiqh">فقه</div>
+        <div class="category" id="companion">صحابي</div>
+        <div class="category" id="history">تاريخ</div>
+        <div class="category" id="sirah">سيرة نبوية</div>
+        <div class="category" id="random">عشوائي</div>
+      </div>
+      <form action="">
+        <div class="game-section">
+          <div class="question" dir="rtl"></div>
+          <div class="answers-info">
+            <div class="info">
+              <div class="progress"></div>
+              <div class="time"></div>
+              <button type="submit">تأكيد</button>
+            </div>
+            <div class="answers" dir="rtl">
+              <input type="radio" name="answer" id="A" style="display: none" />
+              <label for="A">
+                <div class="answer"></div>
+              </label>
+              <input type="radio" name="answer" id="B" style="display: none" />
+              <label for="B">
+                <div class="answer"></div>
+              </label>
+              <input type="radio" name="answer" id="C" style="display: none" />
+              <label for="C">
+                <div class="answer"></div>
+              </label>
+              <input type="radio" name="answer" id="D" style="display: none" />
+              <label for="D">
+                <div class="answer"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
