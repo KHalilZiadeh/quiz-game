@@ -116,27 +116,28 @@ function addAnswers(questions, startingIndex) {
 
 getJson(url);
 
-document.querySelector("button").addEventListener("click", (e) => {
-  if (offset != 10) {
-    e.preventDefault();
-    if (document.querySelector("input[type=radio]:checked").value == "true") {
-      document.querySelector(
-        "input[type=radio]:checked+label .answer"
-      ).style.backgroundColor = "#0f0c";
-    } else {
-      document.querySelectorAll("input").forEach((input, index) => {
-        console.log(typeof input.value);
-        if (input.value === "true") {
-          document.querySelectorAll("input[type=radio]+label .answer")[
-            index
-          ].style.backgroundColor = "#0f0c";
-        }
-      });
-      document.querySelector(
-        "input[type=radio]:checked+label .answer"
-      ).style.backgroundColor = "#f00c";
-    }
+const checkedElement = (input) => (input.checked = true);
 
+document.querySelector("button").addEventListener("click", (e) => {
+  e.preventDefault();
+  if (document.querySelector("input[type=radio]:checked").value == "true") {
+    document.querySelector(
+      "input[type=radio]:checked+label .answer"
+    ).style.backgroundColor = "#0f0c";
+  } else {
+    document.querySelectorAll("input").forEach((input, index) => {
+      console.log(typeof input.value);
+      if (input.value === "true") {
+        document.querySelectorAll("input[type=radio]+label .answer")[
+          index
+        ].style.backgroundColor = "#0f0c";
+      }
+    });
+    document.querySelector(
+      "input[type=radio]:checked+label .answer"
+    ).style.backgroundColor = "#f00c";
+  }
+  if (offset != 10) {
     setTimeout(() => {
       document.querySelectorAll("input[type=radio]").forEach((radio) => {
         if (radio.checked) {
@@ -153,6 +154,10 @@ document.querySelector("button").addEventListener("click", (e) => {
       updateTime();
       progress.innerHTML = `${offset}/10`;
       info.style.setProperty("--percent", `${offset * 10}%`);
+    }, 1000);
+  } else {
+    setTimeout(() => {
+      location.reload();
     }, 1000);
   }
 });
