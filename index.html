@@ -13,6 +13,11 @@
     <title>Quizz App</title>
   </head>
   <header>
+    <p dir="rtl">قم باختيار وضع اللعب</p>
+    <div class="container" dir="rtl">
+      <button id="selected">محدد</button>
+      <button id="random">عشوائي</button>
+    </div>
     <div class="burger">
       <span></span>
       <span></span>
@@ -28,33 +33,38 @@
         <div class="category" id="companion">صحابي</div>
         <div class="category" id="history">تاريخ</div>
         <div class="category" id="sirah">سيرة نبوية</div>
-        <div class="category" id="random">عشوائي</div>
       </div>
       <form action="">
-        <div class="game-section">
-          <div class="question" dir="rtl"></div>
-          <div class="answers-info">
-            <div class="info">
-              <div class="progress"></div>
-              <div class="time"></div>
-              <button type="submit">تأكيد</button>
-            </div>
-            <div class="answers" dir="rtl">
+        <div class="info">
+          <div class="time"></div>
+          <button class="next">التالي</button>
+          <div class="progress"></div>
+        </div>
+        <div class="question" dir="rtl">
+          <div class="question-content"></div>
+          <div class="answers">
+            <div class="answer">
               <input type="radio" name="answer" id="A" style="display: none" />
               <label for="A">
-                <div class="answer"></div>
+                <div class="answer-content"></div>
               </label>
+            </div>
+            <div class="answer">
               <input type="radio" name="answer" id="B" style="display: none" />
               <label for="B">
-                <div class="answer"></div>
+                <div class="answer-content"></div>
               </label>
+            </div>
+            <div class="answer">
               <input type="radio" name="answer" id="C" style="display: none" />
               <label for="C">
-                <div class="answer"></div>
+                <div class="answer-content"></div>
               </label>
+            </div>
+            <div class="answer">
               <input type="radio" name="answer" id="D" style="display: none" />
               <label for="D">
-                <div class="answer"></div>
+                <div class="answer-content"></div>
               </label>
             </div>
           </div>
@@ -62,6 +72,12 @@
       </form>
     </div>
 
-    <script type="module" src="./main.js"></script>
+    <div class="game-ended">
+      <p class="message"></p>
+      <button class="confirm-btn">أعد المحاولة</button>
+    </div>
+
+    <!-- <script src="./main.js"></script> -->
+    <script src="./newMain.js"></script>
   </body>
 </html>

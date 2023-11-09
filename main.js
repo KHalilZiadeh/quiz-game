@@ -1,16 +1,19 @@
 let url = "./questionsDataBase.json";
 let questions = [];
 let offset = 0;
-let duration = 10;
+let duration = 15;
 let setDuration = duration;
 let arrayDuplication = [];
+let score = 0;
 
+let burger = document.querySelector(".burger");
 let answersDiv = document.querySelector(".answers");
 let answers = document.querySelectorAll(".answer");
 let progress = document.querySelector(".progress");
 let info = document.querySelector(".info");
 let time = document.querySelector(".time");
 time.innerHTML = `${Math.floor(duration / 60)}:${duration % 60}`;
+let gameEnded = document.querySelector(".game-ended");
 
 function getJson(url) {
   let req = new XMLHttpRequest();
@@ -114,12 +117,14 @@ function addAnswers(questions, startingIndex) {
   });
 }
 
+document.querySelectorAll("input[type=radio]").forEach((radio) => {
+  radio.checked = false;
+});
 getJson(url);
-
-const checkedElement = (input) => (input.checked = true);
 
 document.querySelector("button").addEventListener("click", (e) => {
   e.preventDefault();
+  checkAnswer();
   if (document.querySelector("input[type=radio]:checked").value == "true") {
     document.querySelector(
       "input[type=radio]:checked+label .answer"
@@ -140,9 +145,7 @@ document.querySelector("button").addEventListener("click", (e) => {
   if (offset != 10) {
     setTimeout(() => {
       document.querySelectorAll("input[type=radio]").forEach((radio) => {
-        if (radio.checked) {
-          radio.checked = false;
-        }
+        radio.checked = false;
       });
       document
         .querySelectorAll("input[type=radio]+label .answer")
@@ -156,9 +159,7 @@ document.querySelector("button").addEventListener("click", (e) => {
       info.style.setProperty("--percent", `${offset * 10}%`);
     }, 1000);
   } else {
-    setTimeout(() => {
-      location.reload();
-    }, 1000);
+    gameEndDisplay(`نتيجتك هي\n${score}`, `مرة أخرى`);
   }
 });
 
@@ -174,8 +175,29 @@ let timer = setInterval(() => {
   updateTime(duration--);
   if (duration == 0) {
     clearInterval(timer, 0);
-    // add pop-Up when time runs out
+    gameEndDisplay(`للأسف انتهى الوقت\nنتيجتك هي ${score}`, `إعادة المحاولة`);
   }
 }, 1000);
 
-// Show the Correct Answer on Confirm
+gameEnded.lastElementChild.addEventListener("click", () => {
+  document.querySelectorAll("input[type=radio]").forEach((radio) => {
+    radio.checked = false;
+  });
+  location.reload();
+});
+
+function checkAnswer() {
+  document.querySelector("input[type=radio]:checked").value != "true"
+    ? (score = score)
+    : (score += 1);
+}
+
+function gameEndDisplay(message, func) {
+  gameEnded.firstElementChild.innerHTML = `${message}`;
+  gameEnded.lastElementChild.innerHTML = `${func}`;
+  gameEnded.style.visibility = "visible";
+}
+
+burger.addEventListener("click", () => {
+  burger.parentElement.classList.toggle("clicked");
+});
