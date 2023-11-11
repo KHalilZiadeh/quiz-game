@@ -3,7 +3,6 @@ let url = "./questionsDataBase.json";
 let jsonData;
 let questions = [];
 let lastSet = [];
-let step = 0;
 let score = 0;
 let duration = 7;
 let setDuration = duration;
@@ -61,10 +60,13 @@ function randomQuestions(jsonFile) {
       });
       lastSet = categoryQA;
       break;
-    default:
+
+    case "selected":
       category = document.querySelector(".category.selected").id;
       categoryQA.push(category);
 
+      console.log(category);
+      console.log(jsonFile[category].length);
       for (let i = 0; i < jsonFile[category].length; i++) {
         categoryQ = Math.floor(Math.random() * jsonFile[category].length);
 
@@ -76,6 +78,9 @@ function randomQuestions(jsonFile) {
           categoryQA.push(value);
         }
       }
+      break;
+    default:
+      break;
   }
   return categoryQA;
 }
@@ -93,11 +98,19 @@ function addQuestionsToPage(questions) {
       questions.shift();
       break;
 
-    default:
+    case "selected":
       if (firstPass) {
+        document
+          .querySelector(".category.selected")
+          .classList.remove("selected");
+        document.querySelector("#messanger").classList.add("selected");
         questions.shift();
         firstPass = false;
+      } else if (questions.length % 5 != 0) {
+        questions.shift();
       }
+      break;
+    default:
       break;
   }
 
@@ -108,11 +121,9 @@ function addQuestionsToPage(questions) {
   });
 
   // Add Question
-  console.log(questions);
   document.querySelector(".question-content").innerHTML = `${questions[0]}`;
   questions.shift();
 
-  console.log(questions);
   // Add Answers
   document.querySelectorAll(".answer").forEach((ans) => {
     ans.querySelector("input[type=radio]").value = Object.values(questions[0]);
@@ -125,7 +136,6 @@ function addQuestionsToPage(questions) {
   });
 
   // Set Progress
-  let cat = document.querySelector(".category.selected").id;
   switch (mode) {
     case "random":
       document
@@ -133,13 +143,22 @@ function addQuestionsToPage(questions) {
         .style.setProperty("--widi", `${(1 - questions.length / 60) * 100}%`);
       break;
 
-    default:
+    case "selected":
       document
         .querySelector(".progress")
         .style.setProperty(
           "--widi",
-          `${(1 - questions.length / (jsonData[cat].length * 5)) * 100}%`
+          `${
+            (1 -
+              questions.length /
+                (jsonData[document.querySelector(".category.selected").id]
+                  .length *
+                  5)) *
+            100
+          }%`
         );
+    default:
+      break;
   }
 }
 
@@ -215,69 +234,81 @@ getQuestions(url);
 document.querySelectorAll("button").forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
-    if (btn.id == "selected") {
+    if (btn.id == "selected" && mode != "selected") {
       mode = "selected";
-    } else if (btn.id == "random") {
+      clearInterval(countDown);
+      timeDiv.innerHTML = "";
+      document.querySelector(".category.selected").classList.remove("selected");
+      document.querySelector(".category").classList.add("selected");
+      addQuestionsToPage((questions = randomQuestions(jsonData)));
+      categories.forEach((cat) => {
+        cat.addEventListener("click", (e) => {
+          categories.forEach((cat) => {
+            if (!e.target.classList.contains("selected")) {
+              document
+                .querySelector(".category.selected")
+                .classList.remove("selected");
+              e.target.classList.add("selected");
+              addQuestionsToPage((questions = randomQuestions(jsonData)));
+            }
+          });
+        });
+      });
+    } else if (btn.id == "random" && mode != "random") {
       mode = "random";
+      addQuestionsToPage((questions = randomQuestions(jsonData)));
+      setTime((duration = setDuration));
+      countDown = setInterval(updateTimeDiv, 1000);
     } else if (btn.classList.contains("confirm-btn")) {
       location.reload();
-    }
-    if (document.querySelector("input[type=radio]:checked")) {
+    } else if (document.querySelector("input[type=radio]:checked")) {
       checkAnswer();
 
       setTimeout(() => {
         if (questions.length != 0) {
+          console.log(questions);
           addQuestionsToPage(questions);
+
           if (mode == "random") {
             countDown = clearInterval(countDown);
             timeDiv.style.color = "#2f2f2f";
             countDown = setInterval(updateTimeDiv, 1000);
-            duration = setDuration;
-            setTime(duration);
+            setTime((duration = setDuration));
+
             if (duration == 0) {
               clearInterval(countDown);
             }
-            if (step == 9) btn.innerHTML = "النتيجة";
+            if (questions.length == 0) btn.innerHTML = "النتيجة";
+          }
+        } else {
+          switch (mode) {
+            case "random":
+              if (questions.length == 0) {
+                clearInterval(countDown);
+                document.querySelector(
+                  ".game-ended p"
+                ).innerHTML = `نتيجتك هي ${score}`;
+                document.querySelector(".game-ended").style.visibility =
+                  "visible";
+              }
+              break;
+
+            default:
+              if (questions.length == 0) {
+                // Add Result
+                console.log("yes");
+              }
           }
         }
 
         blockClick();
       }, 700);
-
-      switch (mode) {
-        case "random":
-          if (step != 9) {
-            step += 1;
-          } else if (step == 9) {
-            clearInterval(countDown);
-            document.querySelector(
-              ".game-ended p"
-            ).innerHTML = `نتيجتك هي ${score}`;
-            document.querySelector(".game-ended").style.visibility = "visible";
-          }
-          break;
-
-        default:
-          if (questions.length == 0) {
-            // Add Result
-            console.log("yes");
-          }
-      }
     }
   });
 });
 
 burgerParent.addEventListener("click", (e) => {
   toggleClicked(e);
-});
-
-categories.forEach((cat) => {
-  cat.addEventListener("click", (e) => {
-    categories.forEach((cat) => {
-      cat.classList.remove("selected");
-      e.target.classList.add("selected");
-    });
-  });
 });
 
 if (mode == "random") {
