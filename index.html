@@ -12,22 +12,38 @@
     <link rel="stylesheet" href="Styles.css" />
     <title>Quizz App</title>
   </head>
-  <header>
-    <p dir="rtl">قم باختيار وضع اللعب</p>
-    <div class="container" dir="rtl">
-      <button id="selected">محدد</button>
-      <button id="random">عشوائي</button>
-    </div>
-    <div class="burger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </header>
   <body>
+    <header>
+      <!-- <div
+        class="viewer"
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 250px;
+          height: 250px;
+          border-radius: 50%;
+          background-color: transparent;
+          box-shadow: 0 0 1px 1000px #000c;
+          outline: 1px solid #fffc;
+          outline-offset: 15px;
+          z-index: 10;
+        "
+      ></div> -->
+      <p dir="rtl">قم باختيار وضع اللعب</p>
+      <div class="container" dir="rtl">
+        <button id="selected">محدد</button>
+        <button id="random">عشوائي</button>
+      </div>
+      <div class="burger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </header>
     <div class="card">
       <div class="categories">
-        <div class="category" id="messanger">نبي</div>
+        <div class="category selected" id="messanger">نبي</div>
         <div class="category" id="quran">قرآن</div>
         <div class="category" id="fiqh">فقه</div>
         <div class="category" id="companion">صحابي</div>
