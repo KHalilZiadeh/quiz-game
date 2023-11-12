@@ -4,7 +4,7 @@ let jsonData;
 let questions = [];
 let lastSet = [];
 let score = 0;
-let duration = 7;
+let duration = 15;
 let setDuration = duration;
 let countDown;
 let mode = "random";
